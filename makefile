@@ -8,7 +8,7 @@ all:
 #safe-ctype.c:const unsigned short _sch_istable[256] =
 #echo "void _start(){ for(;;); }" > 0003.c
 #i686-elf-gcc -o 0003.o 0003.c -ffreestanding -nostdlib -fno-asynchronous-unwind-tables
-0003: 0001 0002 0003.s
+0003: 0001 0002
 	echo "        .global         _start" > 0003.s
 	echo "_start:" >> 0003.s
 	./0001 >> 0003.s
