@@ -1,0 +1,20 @@
+mdasoh@localhost:~/app/opcode$ make
+gcc -o 0001 0001.c -L/usr/i686-elf/lib -I/usr/i686-elf/include -Ibinutils-2.34/opcodes i386-dis.c -lopcodes
+mdasoh@localhost:~/app/opcode$ make 0003
+echo "        .global         _start" > 0003.s
+echo "_start:" >> 0003.s
+./0001 >> 0003.s
+/usr/i686-elf/bin/i686-elf-as -march=i386 -mmnemonic=intel -msyntax=intel -mnaked-reg -o 0003.o 0003.s
+/usr/i686-elf/bin/i686-elf-ld --oformat=binary -o 0003 0003.o
+cat 0003 | xxd
+00000000: 0000 eb00 0000                           ......
+mdasoh@localhost:~/app/opcode$ cat 0003.s
+        .global         _start
+_start:
+x00100000:
+                add    BYTE PTR [eax],al
+                jmp    x00100004
+x00100004:
+                add    BYTE PTR [eax],al
+mdasoh@localhost:~/app/opcode$ 
+https://paste.debian.net/1131894/
