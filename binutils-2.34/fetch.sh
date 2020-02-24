@@ -1,7 +1,7 @@
 #!/bin/sh
 MIRROR=mirrors.edge.kernel.org
 #MIRROR=archive.debian.org
-pwd | grep opcode-0002/binutils-2.34 || exit 0
+pwd | grep opcode-0002/binutils-2.34 || pwd | grep opcode/binutils-2.34 || exit 0
 wget https://$MIRROR/debian/pool/main/b/binutils/binutils_2.34.orig.tar.xz
 ln -sf . binutils-2.34
 tar --keep-directory-symlink -Jxpvf binutils_2.34.orig.tar.xz
