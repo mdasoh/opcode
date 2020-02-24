@@ -1,0 +1,32 @@
+mdasoh@localhost:~/app/opcode-0002$ make
+gcc -o 0001 0001.c -Iinclude i386-dis.c -lopcodes
+gcc -o 0002 0002.c -Iinclude i386-dis.c -lopcodes
+mdasoh@localhost:~/app/opcode-0002$ make 0003
+echo "        .global         _start" > 0003.s
+echo "_start:" >> 0003.s
+./0001 >> 0003.s
+/usr/i686-elf/bin/i686-elf-as -march=i386 -mmnemonic=intel -msyntax=intel -mnaked-reg -o 0003.o 0003.s
+/usr/i686-elf/bin/i686-elf-ld --oformat=binary -o 0003 0003.o
+cat 0003 | xxd
+00000000: 0000 eb00 0000                           ......
+echo "        .global         _start" > 0004.s
+echo "_start:" >> 0004.s
+./0002 0004 >> 0004.s
+/usr/i686-elf/bin/i686-elf-as -march=i386 -mmnemonic=intel -msyntax=intel -mnaked-reg -o 0004.o 0004.s
+/usr/i686-elf/bin/i686-elf-ld --oformat=binary -o 0004 0004.o
+cat 0004 | xxd
+00000000: 6a00 b801 0000 00cd 80                   j........
+rm 0003
+cat 0004.s
+        .global         _start
+_start:
+x00100000:
+                push   0x0
+                mov    eax,0x1
+                int    0x80
+mdasoh@localhost:~/app/opcode-0002$ make run
+as -march=i386 -mmnemonic=intel -msyntax=intel -mnaked-reg -o 0005.o 0004.s
+ld -o 0005 0005.o
+./0005
+mdasoh@localhost:~/app/opcode-0002$ 
+https://paste.debian.net/1131908/
